@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="hand">
-  <xacro:macro name="hand" params="connected_to:='' ns:='' rpy:='0 0 0' xyz:='0 0 0' ">
+  <xacro:macro name="hand" params="connected_to:='' ns:='' rpy:='0 0 0' xyz:='0 0 0' gripper_center:='false' gripper_center_xyz:='0.0 0.0 0.10'">
     <xacro:unless value="${connected_to == ''}">
       <joint name="${ns}_hand_joint" type="fixed">
         <parent link="${connected_to}"/>
@@ -8,6 +8,8 @@
         <origin xyz="${xyz}" rpy="${rpy}"/>
       </joint>
     </xacro:unless>
+
+    <!-- Links -->
     <link name="${ns}_hand">
       <visual>
         <geometry>
@@ -61,6 +63,8 @@
         <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/>
       </inertial>
     </link>
+
+    <!-- Joints -->
     <joint name="${ns}_finger_joint1" type="prismatic">
       <parent link="${ns}_hand"/>
       <child link="${ns}_leftfinger"/>
@@ -76,5 +80,18 @@
       <limit effort="20" lower="0.0" upper="0.04" velocity="0.2"/>
       <mimic joint="${ns}_finger_joint1" />
     </joint>
+
+    <!-- Create gripper center virtual link and joint -->
+    <xacro:if value="${gripper_center}"> <!-- Only when gripper_center==True -->
+      <link name="${ns}_gripper_center">
+      </link>
+      <joint name="${ns}_gripper_center_joint" type="fixed">
+        <parent link="${ns}_hand"/>
+        <child link="${ns}_gripper_center"/>
+        <origin xyz="${gripper_center_xyz}" rpy="0 0 0"/>
+        <axis xyz="0 -1 0"/>
+      </joint>
+    </xacro:if>
+
   </xacro:macro>
 </robot>
