@@ -21,11 +21,14 @@
           <mesh filename="package://franka_description/meshes/collision/hand.stl"/>
         </geometry>
       </collision>
+
+      <!-- for simulation -->
       <inertial>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <mass value="0.68"/>
-        <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.68" />
+        <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1" />
       </inertial>
+      <!-- end for simulation -->
     </link>
     <link name="${ns}_leftfinger">
       <visual>
@@ -38,11 +41,14 @@
           <mesh filename="package://franka_description/meshes/collision/finger.stl"/>
         </geometry>
       </collision>
+
+      <!-- for simulation -->
       <inertial>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <mass value="0.01"/>
-        <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.01" />
+        <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1" />
       </inertial>
+      <!-- end for simulation -->
     </link>
     <link name="${ns}_rightfinger">
       <visual>
@@ -57,11 +63,14 @@
           <mesh filename="package://franka_description/meshes/collision/finger.stl"/>
         </geometry>
       </collision>
+
+      <!-- for simulation -->
       <inertial>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <mass value="0.01"/>
-        <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.01" />
+        <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1" />
       </inertial>
+      <!-- end for simulation -->
     </link>
 
     <!-- Joints -->
@@ -78,11 +87,10 @@
       <origin xyz="0 0 0.0584" rpy="0 0 0"/>
       <axis xyz="0 -1 0"/>
       <limit effort="20" lower="0.0" upper="0.04" velocity="0.2"/>
-      <mimic joint="${ns}_finger_joint1" />
     </joint>
 
     <!-- Create gripper center virtual link and joint -->
-    <xacro:if value="${gripper_center}"> <!-- Only when gripper_center==True -->
+    <xacro:if value="${gripper_center}">      <!-- Only when gripper_center==True -->
       <link name="${ns}_gripper_center">
       </link>
       <joint name="${ns}_gripper_center_joint" type="fixed">
