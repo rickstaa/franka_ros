@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="hand">
-  <xacro:macro name="hand" params="connected_to:='' ns:='' rpy:='0 0 0' xyz:='0 0 0' gripper_center:='false' gripper_center_xyz:='0.0 0.0 0.10'">
+  <xacro:macro name="hand" params="connected_to:='' ns:='' rpy:='0 0 0' xyz:='0 0 0' gripper_center:='false' gripper_center_xyz:='0.0 0.0 0.10' gripper_center_rpy:='0.0 0.0 0.0'">
     <xacro:unless value="${connected_to == ''}">
       <joint name="${ns}_hand_joint" type="fixed">
         <parent link="${connected_to}"/>
@@ -96,7 +96,7 @@
       <joint name="${ns}_gripper_center_joint" type="fixed">
         <parent link="${ns}_hand"/>
         <child link="${ns}_gripper_center"/>
-        <origin xyz="${gripper_center_xyz}" rpy="0 0 0"/>
+        <origin xyz="${gripper_center_xyz}" rpy="${gripper_center_rpy}"/>
         <axis xyz="0 -1 0"/>
       </joint>
     </xacro:if>

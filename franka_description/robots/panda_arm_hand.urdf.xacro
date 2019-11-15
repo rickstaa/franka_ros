@@ -9,6 +9,8 @@
   <xacro:property name="gripper_center" value="$(arg gripper_center)"/>
   <xacro:arg name="gripper_center_xyz" default="0.0 0.0 0.10" />
   <xacro:property name="gripper_center_xyz" value="$(arg gripper_center_xyz)"/>
+  <xacro:arg name="gripper_center_rpy" default="0.0 0.0 0.0" />
+  <xacro:property name="gripper_center_rpy" value="$(arg gripper_center_rpy)"/>
 
   <!-- Include xacro files -->
   <xacro:include filename="$(find franka_description)/robots/panda_arm.xacro"/>
@@ -21,7 +23,7 @@
 
   <!-- Generate urdfs -->
   <xacro:panda_arm />
-  <xacro:hand ns="panda" rpy="0 0 ${-pi/4}" connected_to="panda_link8" gripper_center="${gripper_center}" gripper_center_xyz="${gripper_center_xyz}"/>
+  <xacro:hand ns="panda" rpy="0 0 ${-pi/4}" connected_to="panda_link8" gripper_center="${gripper_center}" gripper_center_xyz="${gripper_center_xyz}" gripper_center_rpy="${gripper_center_rpy}"/>
 
   <!-- for simulation -->
   <xacro:panda_gazebo robot_name="$(arg robot_name)" />
