@@ -90,7 +90,7 @@
     </joint>
 
     <!-- Create gripper center virtual link and joint -->
-    <xacro:if value="${gripper_center}"> <!-- Only when gripper_center==True -->
+    <xacro:if value="${gripper_center}">      <!-- Only when gripper_center==True -->
       <link name="${ns}_gripper_center">
       </link>
       <joint name="${ns}_gripper_center_joint" type="fixed">

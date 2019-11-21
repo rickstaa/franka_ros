@@ -4,6 +4,19 @@
 
 See the [Franka Control Interface (FCI) documentation][fci-docs] for more information.
 
+## My Changes
+
+In order to integrate the panda robot into gazebo I made changes to the following files:
+
+- franka_description/robots/hand.xacro
+- franka_description/robots/panda_arm.xacro
+- franka_description/robots/panda_arm_hand.urdf.xacro
+
+I added the following files to the repository:
+
+- franka_description/robots/panda.gazebo.xacro
+- franka_description/robots/panda.transmission.xacro
+
 ## License
 
 All packages of `franka_ros` are licensed under the [Apache 2.0 license][apache-2.0].
