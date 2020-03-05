@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="hand">
-  <xacro:macro name="hand" params="connected_to:='' ns:='' rpy:='0 0 0' xyz:='0 0 0' ">
+  <xacro:macro name="hand" params="connected_to:='' ns:='' rpy:='0 0 0' xyz:='0 0 0' grip_site:='false' grip_site_xyz:='0.0 0.0 0.10' grip_site_rpy:='0.0 0.0 0.0'">
     <xacro:unless value="${connected_to == ''}">
       <joint name="${ns}_hand_joint" type="fixed">
         <parent link="${connected_to}"/>
@@ -84,5 +84,16 @@
       <axis xyz="0 -1 0"/>
       <limit effort="20" lower="0.0" upper="0.04" velocity="0.2"/>
     </joint>
+    <!-- Add virtual grip site link -->
+    <xacro:if value="${grip_site}">
+      <!-- Only when grip_site==True -->
+      <link name="${ns}_grip_site"/>
+      <joint name="${ns}_grip_site_joint" type="fixed">
+        <parent link="${ns}_hand" />
+        <child link="${ns}_grip_site" />
+        <origin xyz="${grip_site_xyz}" rpy="${grip_site_rpy}" />
+        <axis xyz="0 -1 0" />
+      </joint>
+    </xacro:if>
   </xacro:macro>
 </robot>

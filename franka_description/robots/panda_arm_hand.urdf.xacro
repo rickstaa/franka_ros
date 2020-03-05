@@ -3,13 +3,21 @@
   <xacro:include filename="$(find franka_description)/robots/panda_arm.xacro"/>
   <xacro:include filename="$(find franka_description)/robots/hand.xacro"/>
 
+  <!-- Initialize grip_site properties -->
+  <xacro:arg name="grip_site" default="false" />
+  <xacro:property name="grip_site" value="$(arg grip_site)" />
+  <xacro:arg name="grip_site_xyz" default="0.0 0.0 0.10" />
+  <xacro:property name="grip_site_xyz" value="$(arg grip_site_xyz)" />
+  <xacro:arg name="grip_site_rpy" default="0.0 0.0 0.0" />
+  <xacro:property name="grip_site_rpy" value="$(arg grip_site_rpy)" />
+
   <!-- for simulation -->
   <xacro:include filename="$(find franka_description)/robots/panda.gazebo.xacro"/>
   <xacro:include filename="panda.transmission.xacro"/>
   <!-- end for simulation -->
 
   <xacro:panda_arm />
-  <xacro:hand ns="panda" rpy="0 0 ${-pi/4}" connected_to="panda_link8"/>
+  <xacro:hand ns="panda" rpy="0 0 ${-pi/4}" connected_to="panda_link8" grip_site="${grip_site}" grip_site_xyz="${grip_site_xyz}" grip_site_rpy="${grip_site_rpy}" />
 
   <!-- for simulation -->
   <xacro:arg name="robot_name" default="panda"/>

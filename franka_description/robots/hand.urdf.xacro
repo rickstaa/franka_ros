@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="hand">
   <xacro:include filename="hand.xacro"/>
-  <xacro:hand ns="panda"/>
+
+  <!-- Initialize grip_site properties -->
+  <xacro:arg name="grip_site" default="false" /> <!-- Default value -->
+  <xacro:property name="grip_site" value="$(arg grip_site)" /> <!-- Overload with launchfile argument -->
+  <xacro:arg name="grip_site_xyz" default="0.0 0.0 0.10" /> <!-- Default value -->
+  <xacro:property name="grip_site_xyz" value="$(arg grip_site_xyz)" /> <!-- Overload with launchfile argument -->
+
+  <xacro:hand ns="panda" grip_site="${grip_site}" grip_site_xyz="${grip_site_xyz}" grip_site_rpy="${grip_site_rpy}" />
 </robot>
