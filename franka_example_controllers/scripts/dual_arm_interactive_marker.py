@@ -1,18 +1,20 @@
 #!/usr/bin/env python
-""" This simple script creates an interactive marker for changing desired centering pose of
-    two the dual_panda_cartesian_impedance_example_controller. It features also resetting the
-    marker to current centering pose between the left and the right endeffector.
+""" This simple script creates an interactive marker for changing desired centering pose
+    of two the dual_panda_cartesian_impedance_example_controller. It features also
+    resetting the marker to current centering pose between the left and the right
+    endeffector.
 """
 
-import rospy
 import argparse
 
-from interactive_markers.interactive_marker_server import \
-    InteractiveMarkerServer, InteractiveMarkerFeedback
-from visualization_msgs.msg import InteractiveMarker, \
-    InteractiveMarkerControl, Marker
+import rospy
 from franka_msgs.msg import FrankaState
 from geometry_msgs.msg import PoseStamped
+from interactive_markers.interactive_marker_server import (
+    InteractiveMarkerFeedback,
+    InteractiveMarkerServer,
+)
+from visualization_msgs.msg import InteractiveMarker, InteractiveMarkerControl, Marker
 
 marker_pose = PoseStamped()
 
@@ -45,7 +47,9 @@ def make_sphere(scale=0.3):
 
 def publish_target_pose():
     """
-    This function publishes desired centering pose which the controller will subscribe to.
+    This function publishes desired centering pose which the controller will subscribe
+    to.
+
     :return: None
     """
     marker_pose.header.stamp = rospy.Time(0)
@@ -54,7 +58,9 @@ def publish_target_pose():
 
 def left_franka_state_callback(msg):
     """
-    This callback function set `has_error` variable to True if the left arm is having an error.
+    This callback function set `has_error` variable to True if the left arm is having an
+    error.
+
     :param msg: FrankaState msg data
     :return:  None
     """
@@ -68,7 +74,9 @@ def left_franka_state_callback(msg):
 
 def right_franka_state_callback(msg):
     """
-    This callback function set `has_error` variable to True if the right arm is having an error.
+    This callback function set `has_error` variable to True if the right arm is having
+    an error.
+
     :param msg: FrankaState msg data
     :return:  None
     """
@@ -82,7 +90,9 @@ def right_franka_state_callback(msg):
 
 def centering_pose_callback(msg):
     """
-    This callback function sets the marker pose to the current centering pose from a subscribed topic.
+    This callback function sets the marker pose to the current centering pose from a
+    subscribed topic.
+
     :return: None
     """
     global centering_frame_ready
@@ -94,7 +104,8 @@ def centering_pose_callback(msg):
 
 def reset_marker_pose_blocking():
     """
-    This function resets the marker pose to current "middle pose" of left and right arm EEs.
+    This function resets the marker pose to current "middle pose" of left and right arm
+    EEs.
     :return: None
     """
 
@@ -105,7 +116,9 @@ def reset_marker_pose_blocking():
 
     centering_frame_pose_sub = rospy.Subscriber(
         "dual_arm_cartesian_impedance_example_controller/centering_frame",
-        PoseStamped, centering_pose_callback)
+        PoseStamped,
+        centering_pose_callback,
+    )
 
     # Get initial pose for the interactive marker
     while not centering_frame_ready:
@@ -116,7 +129,9 @@ def reset_marker_pose_blocking():
 
 def process_feedback(feedback):
     """
-    This callback function clips the marker_pose inside a predefined box to prevent misuse of the marker.
+    This callback function clips the marker_pose inside a predefined box to prevent
+    misuse of the marker.
+
     :param feedback: feedback data of interactive marker
     :return: None
     """
@@ -133,13 +148,11 @@ if __name__ == "__main__":
     rospy.init_node("target_pose_node")
 
     parser = argparse.ArgumentParser("dual_panda_interactive_marker.py")
-    parser.add_argument("--left_arm_id",
-                        help="The id of the left arm.",
-                        required=True)
-    parser.add_argument("--right_arm_id",
-                        help="The id of the right arm.",
-                        required=True)
-    parser.add_argument('args', nargs=argparse.REMAINDER)
+    parser.add_argument("--left_arm_id", help="The id of the left arm.", required=True)
+    parser.add_argument(
+        "--right_arm_id", help="The id of the right arm.", required=True
+    )
+    parser.add_argument("args", nargs=argparse.REMAINDER)
     args = parser.parse_args()
 
     # Arm IDs of left and right arms
@@ -147,11 +160,17 @@ if __name__ == "__main__":
     right_arm_id = args.right_arm_id
 
     # Initialize subscribers for error states of the arms
-    left_state_sub = rospy.Subscriber(left_arm_id + "_state_controller/franka_states",
-                                 FrankaState, left_franka_state_callback)
+    left_state_sub = rospy.Subscriber(
+        left_arm_id + "_state_controller/franka_states",
+        FrankaState,
+        left_franka_state_callback,
+    )
 
-    right_state_sub = rospy.Subscriber(right_arm_id + "_state_controller/franka_states",
-                                 FrankaState, right_franka_state_callback)
+    right_state_sub = rospy.Subscriber(
+        right_arm_id + "_state_controller/franka_states",
+        FrankaState,
+        right_franka_state_callback,
+    )
 
     # Set marker pose to be the current "middle pose" of both EEs
     reset_marker_pose_blocking()
@@ -160,7 +179,8 @@ if __name__ == "__main__":
     pose_pub = rospy.Publisher(
         "dual_arm_cartesian_impedance_example_controller/centering_frame_target_pose",
         PoseStamped,
-        queue_size=1)
+        queue_size=1,
+    )
 
     # Interactive marker settings
     server = InteractiveMarkerServer("target_pose_marker")
@@ -168,13 +188,15 @@ if __name__ == "__main__":
     int_marker.header.frame_id = marker_pose.header.frame_id
     int_marker.scale = 0.3
     int_marker.name = "centering_frame_pose"
-    int_marker.description = ("Target centering pose\n"
-                              "BE CAREFUL! \n"
-                              "If you move the target marker\n"
-                              "both robots will follow it \n"
-                              "as the center between the two\n"
-                              "endeffectors. Be aware of\n"
-                              "potential collisions!")
+    int_marker.description = (
+        "Target centering pose\n"
+        "BE CAREFUL! \n"
+        "If you move the target marker\n"
+        "both robots will follow it \n"
+        "as the center between the two\n"
+        "endeffectors. Be aware of\n"
+        "potential collisions!"
+    )
     int_marker.pose = marker_pose.pose
 
     # insert a box
